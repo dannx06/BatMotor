@@ -105,7 +105,7 @@ BatMotor/
 ## 1️⃣ Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/BatMotor.git
+https://github.com/dannx06/BatMotor.git
 ```
 
 ## 2️⃣ Acesse a pasta
