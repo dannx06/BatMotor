@@ -1,0 +1,144 @@
+<mxfile host="app.diagrams.net" modified="2026-04-08T00:00:00.000Z" agent="BatMotor" version="24.0.0" type="device">
+  <diagram name="Classes - API BatMotor" id="classes-backend">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="z_dom" value="&lt;b&gt;Domínio (Prisma / MySQL)&lt;/b&gt;&#xa;&lt;font style=&quot;font-size:9px&quot;&gt;Esquerda: RBAC · Centro-direita: matérias/fornecedores · Direita: movimentação&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=#FFFDE7;strokeColor=#F9A825;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="940" height="820" as="geometry" />
+        </mxCell>
+        <mxCell id="z_app" value="&lt;b&gt;Camadas Express (exemplo)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=#E8F5E9;strokeColor=#2E7D32;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="40" width="530" height="420" as="geometry" />
+        </mxCell>
+        <!-- RBAC: coluna esquerda, sem cruzar estoque -->
+        <mxCell id="c_usuario" value="Usuario&#xa;────────────&#xa;+ id: Int&#xa;+ nome, email, senha&#xa;+ cpf: String&#xa;+ ativo: Boolean" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="118" width="132" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c_up" value="UsuarioPerfil&#xa;────────────&#xa;usuario_id&#xa;perfil_id" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="232" y="124" width="118" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="c_perfil" value="Perfil&#xa;────────────&#xa;+ id: Int&#xa;+ role: Role&#xa;+ descricao: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="390" y="124" width="128" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="c_mod" value="Modulo&#xa;────────────&#xa;+ id, nome&#xa;+ descricao" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="288" width="118" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c_perm" value="PermissaoModulo&#xa;────────────&#xa;+ perfil_id, modulo_id&#xa;+ pode_ler/criar/...&#xa;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="228" y="278" width="152" height="100" as="geometry" />
+        </mxCell>
+        <!-- Estoque: eixo vertical MateriaPrima — MF — Fornecedor; Estoque à esquerda da MP -->
+        <mxCell id="c_est" value="EstoqueAtual&#xa;────────────&#xa;materia_prima_id PK&#xa;quantidade" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="458" y="208" width="138" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="c_mp" value="MateriaPrima&#xa;────────────&#xa;+ id, nome, categoria&#xa;+ unidade, estoque_minimo&#xa;+ ativo" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="458" y="328" width="158" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="c_mf" value="MateriaFornecedor&#xa;────────────&#xa;materia_prima_id&#xa;fornecedor_id" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="458" y="468" width="148" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="c_for" value="Fornecedor&#xa;────────────&#xa;+ id, nome, cnpj&#xa;+ email, telefone&#xa;+ ativo" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="458" y="588" width="138" height="100" as="geometry" />
+        </mxCell>
+        <!-- Movimentação à direita: ligação Usuario passa por cima do bloco estoque (waypoints) -->
+        <mxCell id="c_mov" value="Movimentacao&#xa;────────────&#xa;+ id, materia_prima_id&#xa;+ tipo, quantidade&#xa;+ motivo, usuario_id&#xa;+ data_atual" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="708" y="318" width="158" height="118" as="geometry" />
+        </mxCell>
+        <mxCell id="c_enum" value="«enumeration»&#xa;TipoMovimentacao&#xa;ENTRADA | SAIDA | AJUSTE&#xa;&#xa;«enumeration»&#xa;Role&#xa;ADMIN | GERENTE | FUNCIONARIO" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#FFF9C4;strokeColor=#F57F17;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="708" y="118" width="208" height="118" as="geometry" />
+        </mxCell>
+        <!-- Express -->
+        <mxCell id="c_app" value="ExpressApp&#xa;────────────&#xa;+ createApp()&#xa;+ rotas" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="88" width="124" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c_prisma" value="«ORM»&#xa;PrismaClient&#xa;────────────&#xa;usuario, movimentacao&#xa;materiaPrima, ..." style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1288" y="88" width="158" height="92" as="geometry" />
+        </mxCell>
+        <mxCell id="c_ac" value="AuthController&#xa;────────────&#xa;+ login()" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="218" width="124" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="c_as" value="AuthService&#xa;────────────&#xa;+ login()" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1288" y="218" width="114" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="c_mc" value="MovimentacaoController&#xa;────────────&#xa;+ create()&#xa;+ list()" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="338" width="156" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="c_ms" value="MovimentacaoService&#xa;────────────&#xa;+ registrar()" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1288" y="338" width="144" height="72" as="geometry" />
+        </mxCell>
+        <!-- Associações domínio -->
+        <mxCell id="r1" style="endArrow=none;html=1;endSize=12;startArrow=diamondThin;startFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_usuario" target="c_up">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1l" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=9;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry x="-0.2" y="1" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r2" style="endArrow=none;html=1;startArrow=diamondThin;startFill=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_up" target="c_perfil">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Usuario → Movimentacao: contorna por cima (não atravessa MateriaPrima) -->
+        <mxCell id="r3" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.25;entryX=0;entryY=0.35;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_usuario" target="c_mov">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="143" />
+              <mxPoint x="340" y="88" />
+              <mxPoint x="668" y="88" />
+              <mxPoint x="668" y="359" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r4" style="endArrow=none;html=1;exitX=0;exitY=0.45;entryX=1;entryY=0.45;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_mov" target="c_mp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5" style="endArrow=none;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_est" target="c_mp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6" style="endArrow=none;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_mf" target="c_mp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r7" style="endArrow=none;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_for" target="c_mf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" style="endArrow=none;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_perfil" target="c_perm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9" style="endArrow=none;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_perm" target="c_mod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Camadas -->
+        <mxCell id="r10" style="endArrow=open;html=1;dashed=1;dashPattern=8 8;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_app" target="c_ac">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r10b" value="«usa»" style="edgeLabel;html=1;align=center;fontSize=9;" vertex="1" connectable="0" parent="r10">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint y="-8" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="r11" style="endArrow=open;html=1;dashed=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_app" target="c_mc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r12" style="endArrow=open;html=1;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_ac" target="c_as">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r13" style="endArrow=open;html=1;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_mc" target="c_ms">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r14" style="endArrow=open;html=1;dashed=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_as" target="c_prisma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r15" style="endArrow=open;html=1;dashed=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_ms" target="c_prisma">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- Prisma → Movimentacao: contorna pela margem entre pacotes -->
+        <mxCell id="r16" style="endArrow=open;html=1;dashed=1;strokeColor=#9673a6;exitX=0;exitY=0.5;entryX=1;entryY=0.5;edgeStyle=orthogonalEdgeStyle;orthogonalLoop=1;jettySize=auto;" edge="1" parent="1" source="c_prisma" target="c_mov">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="990" y="134" />
+              <mxPoint x="990" y="377" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r16l" value="persiste" style="edgeLabel;html=1;align=center;fontSize=9;fontColor=#9673a6;" vertex="1" connectable="0" parent="r16">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry"><mxPoint x="-28" y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

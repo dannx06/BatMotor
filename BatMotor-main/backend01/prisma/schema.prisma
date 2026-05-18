@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Teste {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String
+  senha String
+}
+
+enum Role {
+  ADMIN
+  GERENTE
+  FUNCIONARIO
+}
+
+model Usuario {
+  id            Int             @id @default(autoincrement())
+  nome          String
+  email         String          @unique
+  senha         String
+  cpf           String          @unique
+  ativo         Boolean         @default(true)
+  data_atual    DateTime        @default(now())
+  usuarioPerfis UsuarioPerfil[]
+  movimentacoes Movimentacao[]
+}
+
+model Modulo {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  descricao String?
+
+  permissoes PermissaoModulo[]
+}
+
+model Perfil {
+  id        Int     @id @default(autoincrement())
+  role      Role
+  descricao String?
+
+  usuarioPerfis UsuarioPerfil[]
+  permissoes    PermissaoModulo[]
+}
+
+model MateriaPrima {
+  id             Int     @id @default(autoincrement())
+  nome           String
+  categoria      String
+  unidade        String
+  estoque_minimo Int
+  ativo          Boolean @default(true)
+
+  materiasFornecedores MateriaFornecedor[]
+  estoque              EstoqueAtual?
+  movimentacoes        Movimentacao[]
+}
+
+model Fornecedor {
+  id       Int     @id @default(autoincrement())
+  nome     String
+  cnpj     String  @unique
+  email    String?
+  telefone String?
+  ativo    Boolean @default(true)
+
+  materiasFornecedores MateriaFornecedor[]
+}
+
+model UsuarioPerfil {
+  usuario_id Int
+  perfil_id  Int
+
+  usuario Usuario @relation(fields: [usuario_id], references: [id])
+  perfil  Perfil  @relation(fields: [perfil_id], references: [id])
+
+  @@id([usuario_id, perfil_id])
+}
+
+model MateriaFornecedor {
+  materia_prima_id Int
+  fornecedor_id    Int
+
+  materia    MateriaPrima @relation(fields: [materia_prima_id], references: [id])
+  fornecedor Fornecedor   @relation(fields: [fornecedor_id], references: [id])
+
+  @@id([materia_prima_id, fornecedor_id])
+}
+
+model PermissaoModulo {
+  id             Int     @id @default(autoincrement())
+  perfil_id      Int
+  modulo_id      Int
+  pode_ler       Boolean @default(false)
+  pode_criar     Boolean @default(false)
+  pode_atualizar Boolean @default(false)
+  pode_excluir   Boolean @default(false)
+
+  perfil Perfil @relation(fields: [perfil_id], references: [id])
+  modulo Modulo @relation(fields: [modulo_id], references: [id])
+}
+
+model EstoqueAtual {
+  materia_prima_id Int @id
+  quantidade       Int @default(0)
+
+  materia MateriaPrima @relation(fields: [materia_prima_id], references: [id])
+}
+
+model Movimentacao {
+  id               Int              @id @default(autoincrement())
+  materia_prima_id Int
+  tipo             TipoMovimentacao
+  quantidade       Int
+  motivo           String?
+  usuario_id       Int
+  data_atual       DateTime         @default(now())
+
+  materia MateriaPrima @relation(fields: [materia_prima_id], references: [id])
+  usuario Usuario      @relation(fields: [usuario_id], references: [id])
+}
+
+enum TipoMovimentacao {
+  ENTRADA
+  SAIDA
+  /** Correção de inventário: altera saldo pelo delta em `quantidade` (pode ser negativo). */
+  AJUSTE
+}

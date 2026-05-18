@@ -1,0 +1,19 @@
+# Deploy do frontend Vite quando o Git no Netlify aponta à raiz do repositório BatMotor.
+# Isto faz o mesmo que definir manualmente Base directory = "frontend - mongoDB".
+#
+# Para produção, VITE_* têm de existir durante `npm run build` (injecção estática no bundle).
+
+[build]
+  base = "frontend - mongoDB"
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  VITE_API_URL = "https://batmotor-api-w3ad.onrender.com"
+  VITE_USE_MOCK = "false"
+
+# SPA (React Router): evita 404 ao abrir /login ou recarregar noutras rotas.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,14 @@
+// tsconfig — backend ESM + Prisma Client gerado em src/generated/prisma
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*", "prisma.config.ts"],
+  "exclude": ["src/main.legado.ts"]
+}
